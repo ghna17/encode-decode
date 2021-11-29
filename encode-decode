@@ -1,0 +1,128 @@
+def rotate(alphabet):
+	""""Take characters from alphabet string and move it num spots on the string to get new character"""
+	# create a variable for position number that the user want to rotate
+	numPos = int(input("\nHow many positions in the alphabet you want to rotate? >> "))
+
+	# make guardians for rotate() function
+	assert numPos <= len(alphabet), "number of positions should not be longer than the length of string"
+	assert numPos > 0, "gotta pick a positive integer"
+
+	# assign a string concatenation to a variable called key
+	key = alphabet[numPos:len(alphabet)] + alphabet[:numPos]
+	return key
+
+def encode(alphabet, key):
+	"""Encode a string by searching each character from the alphabet and assign it to the corresponding character in the key"""
+	# create a variable to ask the user the message to encode
+	st = input("\nWhat message you want to encode? >> ")
+
+	# uppercase the characters in string
+	newStr = st.upper()
+
+	# set the initial index and the changing string for future use
+	index = 0
+	strChange = ""
+
+	# start while loop to encode each character
+	while index < len(newStr):
+		# assign next character to variable called character	
+		char = newStr[index]
+
+		# create an assert statement to make sure the character is available
+		assert char in key, "Your string should have acceptable characters"
+
+		# find the index of the character in the alphabet string
+		digit = alphabet.find(char)
+
+		# use the above index to search for a character with the same index in the key string
+		charChange = key[digit]
+
+		# check if the message input has any lowercase characters, if yes change it to lowercase
+		if st[index].islower() == True:
+			charChange = charChange.lower()
+
+		# use string concatenation to make a complete changing string
+		strChange += charChange
+
+		# change the index variable to get out of while loop
+		index = index + 1
+	return strChange
+
+def decode(alphabet, key):
+	"""Decode a string by searching each character from the key and assign it to the corresponding character in the alphabet"""
+	# create a variable to ask the user the message to decode
+	st = input("\nWhat message you want to decode? >> ")
+
+	# uppercase the characters in string
+	newStr = st.upper()
+
+	# set the initial index and the changing string for future use
+	index = 0
+	strChange = ""
+
+	# start while loop to decode each character
+	while index < len(newStr):
+		# assign next character to variable called character
+		char = newStr[index]
+
+		# create an assert statement to make sure the character is available
+		assert char in alphabet, "Your string should have acceptable characters"
+
+		# find the index of the character in the key string
+		digit = key.find(char)
+
+		# use the above index to search for a character with the same index in the alphabet string
+		charChange = alphabet[digit]
+
+		# check if the message input has any lowercase characters, if yes change it to lowercase
+		if st[index].islower() == True:
+			charChange = charChange.lower()
+			
+		# use string concatenation to make a complete changing string
+		strChange += charChange
+
+		# change the index variable to get out of while loop
+		index = index + 1
+	return strChange
+
+def ask(alphabet, key):
+	"""Ask user to make choice whether they want to encode a message, decode a message or quit"""
+	# set value of quit to be False
+	quit = False
+
+	# start while loop with the condition of quit variable
+	while quit == False:
+		# create a list for answers variable including three choices
+		answers = [1, 2, 3]
+		try:
+			# prompt the user to make a choice
+			choice = int(input("\nWould you like to encode, decode, or quit? Press 1 to encode, 2 to decode, and 3 to quit. >> "))
+
+			# create a condition whether the choice is valid
+			if choice in answers:
+				# create a condition when the user wants to encode
+				if choice == answers[0]:
+					print("\nYour encoded message is: ", encode(alphabet, key))
+
+				# create a condition when the user wants to decode	
+				elif choice == answers[1]:
+					print("\nYour decoded message is: ", decode(alphabet, key))
+
+				# create a condition when the user wants to quit	
+				else:
+					quit = True
+
+		except ValueError:
+			print("You need to give me a number here.")
+	print("Thanks for encoding and decoding!")	
+
+# int var
+# create a variable called program alphabet and print it for the user
+progAlp = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ ,.?0123456789'
+print("Here is the alphabet that this program will use\n", progAlp)
+
+# create a variable called program key by calling rotate() function
+progKey = rotate(progAlp)
+
+# program runs
+ask(progAlp, progKey)
